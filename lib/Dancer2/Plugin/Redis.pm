@@ -102,10 +102,16 @@ has _serialization => (
 
 has _redis => (
   is      => 'lazy',
-  isa     => InstanceOf ['Redis'],
+  isa     => AnyOf [ InstanceOf ['Redis'], InstanceOf ['t::TestApp::RedisMock'] ],
   builder => sub {
     my ($dsl2) = @_;
     my $conf = plugin_setting;
+
+    if ( $conf->{test_mock} ) {
+      require t::TestApp::RedisMock;
+      return t::TestApp::RedisMock->new;
+    }
+
     my %opts;
 
     # Build Redis->new settings.
