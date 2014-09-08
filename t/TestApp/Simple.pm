@@ -32,5 +32,11 @@ get q{/expire} => sub {
   sprintf 'expire %s: %s', param('key'), param('expire');
 };
 
+get q{/del} => sub {
+  no warnings 'uninitialized';
+  redis_del param('key');
+  sprintf 'del %s', param('key');
+};
+
 ############################################################################
 builder { psgi_app };
