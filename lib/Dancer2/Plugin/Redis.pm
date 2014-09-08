@@ -214,6 +214,14 @@ sub _expire {
 
 ############################################################################
 
+sub _del {
+  my ( $dsl, $key ) = plugin_args @_;
+  croak q{Redis key is required} unless $key;
+  return $dsl->_redis->del($key);
+}
+
+############################################################################
+
 register redis_plugin => \&_plugin, { is_global => 1 };
 
 =method redis_plugin
@@ -277,6 +285,14 @@ false value will turn off expiration.
     
     redis_expire 'key', undef; # removes expire from key
     redis_expire 'key';        # so will this
+
+=cut
+
+register redis_del => \&_del, { is_global => 1 };
+
+=method redis_del
+
+Deletes a key within Redis.
 
 =cut
 

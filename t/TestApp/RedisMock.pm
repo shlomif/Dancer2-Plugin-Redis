@@ -4,7 +4,7 @@ use strictures 1;
 # COPYRIGHT
 
 BEGIN {
-  our $VERSION = '0.001';  # fixed version - NOT handled via DZP::OurPkgVersion.
+  our $VERSION = '0.002';  # fixed version - NOT handled via DZP::OurPkgVersion.
 }
 
 use Moo;
@@ -61,6 +61,14 @@ sub mget {
 sub mset {
   my ( $self, %keys_values ) = @_;
   $self->set( $_ => $keys_values{$_} ) for ( keys %keys_values );
+  return 1;
+}
+
+############################################################################
+
+sub del {
+  my ( $self, $key ) = @_;
+  delete $self->_storage->{$key};
   return 1;
 }
 
