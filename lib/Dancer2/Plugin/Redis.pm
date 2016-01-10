@@ -334,6 +334,16 @@ runtime recommends with Dancer2::Plugin::Redis.
 
 =back
 
+=head2 CONTRIBUTORS
+
+The following people have contributed to Dancer2::Plugin::Redis. Thanks!
+
+=over
+
+=item SysPete
+
+=back
+
 =cut
 
 1;
