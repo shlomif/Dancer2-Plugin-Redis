@@ -153,14 +153,14 @@ has _redis => (
 ############################################################################
 
 sub _plugin {
-  my ($dsl) = plugin_args @_;
+  my ($dsl) = @_;
   return $dsl;
 }
 
 ############################################################################
 
 sub _get {
-  my ( $dsl, $key ) = plugin_args @_;
+  my ( $dsl, $key ) = @_;
   croak q{Redis key is required} unless $key;
   my $data = $dsl->_redis->get($key);
   if ( my $serialization = $dsl->_serialization ) {
@@ -172,7 +172,7 @@ sub _get {
 ############################################################################
 
 sub _mget {
-  my ( $dsl, @keys ) = plugin_args @_;
+  my ( $dsl, @keys ) = @_;
   croak q{Redis key is required} unless scalar @keys;
   my @data = $dsl->_redis->mget(@keys);
   if ( my $serialization = $dsl->_serialization ) {
@@ -184,7 +184,7 @@ sub _mget {
 ############################################################################
 
 sub _set {
-  my ( $dsl, $key, $data ) = plugin_args @_;
+  my ( $dsl, $key, $data ) = @_;
   croak q{Redis key is required} unless $key;
   if ( my $serialization = $dsl->_serialization ) {
     $data = $serialization->encode($data);
@@ -195,7 +195,7 @@ sub _set {
 ############################################################################
 
 sub _mset {
-  my ( $dsl, %key_data ) = plugin_args @_;
+  my ( $dsl, %key_data ) = @_;
   croak q{Redis key is required} unless scalar %key_data;
   if ( my $serialization = $dsl->_serialization ) {
     $key_data{$_} = $serialization->encode( $key_data{$_} ) for ( keys %key_data );
@@ -206,7 +206,7 @@ sub _mset {
 ############################################################################
 
 sub _expire {
-  my ( $dsl, $key, $timeout ) = plugin_args @_;
+  my ( $dsl, $key, $timeout ) = @_;
   croak q{Redis key is required} unless $key;
   return $dsl->_redis->persist($key) unless $timeout;
   return $dsl->_redis->expire( $key => $timeout );
@@ -215,7 +215,7 @@ sub _expire {
 ############################################################################
 
 sub _del {
-  my ( $dsl, $key ) = plugin_args @_;
+  my ( $dsl, $key ) = @_;
   croak q{Redis key is required} unless $key;
   return $dsl->_redis->del($key);
 }
