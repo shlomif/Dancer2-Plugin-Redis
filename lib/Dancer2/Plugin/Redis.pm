@@ -76,7 +76,8 @@ my $TYPE_SERIALIZATIONOBJECT = Type::Tiny->new(
 
 has _serialization => (
   is      => 'lazy',
-  isa     => Maybe [ $TYPE_SERIALIZATIONOBJECT ],
+  # TODO: Restore the "isa =>" to a working default
+  # isa     => Maybe [ $TYPE_SERIALIZATIONOBJECT ],
   builder => sub {
     my ($dsl1) = @_;
     my $conf = plugin_setting;
@@ -103,7 +104,9 @@ has _serialization => (
 has _redis => (
   is      => 'lazy',
   isa     => InstanceOf ['Redis'] | InstanceOf ['t::TestApp::RedisMock'],
-  builder => sub {
+);
+
+sub _build__redis {
     my ($dsl2) = @_;
     my $conf = plugin_setting;
 
@@ -147,8 +150,7 @@ has _redis => (
       if !$opts{server} && !$opts{sock};
 
     return Redis->new(%opts);
-  },
-);
+}
 
 ############################################################################
 
